@@ -87,15 +87,17 @@ namespace ProgPokedexConsol
             int randomPokemon;
             
             int[,] listeGeneration = DownloadPokemon.listeGen();
-            
+            //Pour faire les 8 gen
             for (int i = 0; i < listeGeneration.GetLength(0); i++)
             {
                 Console.WriteLine("\n\nPokémon de random de chaque type de la génération: " + i);
                 var table = new ConsoleTable("Nom", "Name", "Id", "Type 1");
-                List<string> listeTypePokemonDone = new List<string>();                               
+                List<string> listeTypePokemonDone = new List<string>();
+                //Pour faire les 8 types
                 for (int j = 0; j < listeGeneration[i,1]; j++)
                 {
                     randomPokemon = random.Next(listeGeneration[i, 0], listeGeneration[i, 1]);
+                    //Ajouter à la table si le type n'est pas déjà fait
                     if (!listeTypePokemonDone.Contains(pokemons[randomPokemon].types[0]))
                     {
                         listeTypePokemonDone.Add(pokemons[randomPokemon].types[0]);
@@ -155,7 +157,7 @@ namespace ProgPokedexConsol
 
             foreach (var pokemon in pokemons)
             {
-                //Add to the list if the type is the same as the one chosen
+                //Add to the list if the gen is the same as the one chosen
                 if (pokemon.id <= generationTest[generationChosen-1,1] && pokemon.id >= generationTest[generationChosen-1,0])
                 {
                     string type1;
