@@ -15,10 +15,17 @@ namespace ProgPokedexConsol
             
             do
             {
-                Console.WriteLine("\n\n1) Afficher la liste des Pokémons\n2) Afficher un Pokémon de chaque type pour chaque génération\n3) Afficher tout les Pokémons d'un type\n4) Afficher tous les Pokémons de la génération de votre choix\n5) Afficher la moyenne des poids des Pokémons du type de votre choix\n6) Afficher le pokemon par son id\n7) Pour quitter\n\n");
+                Console.WriteLine("\n\n1) Afficher la liste des Pokémons\n" +
+                    "2) Afficher un Pokémon de chaque type pour chaque génération\n" +
+                    "3) Afficher tout les Pokémons d'un type\n" +
+                    "4) Afficher tous les Pokémons de la génération de votre choix\n" +
+                    "5) Afficher la moyenne des poids des Pokémons du type de votre choix\n" +
+                    "6) Afficher le pokemon par son id\n" +
+                    "7) Jouer à deviner le pokemon par sa description\n" +
+                    "8) Pour quitter\n\n");
                 optionChoice = Console.ReadLine();
                 Console.Clear();
-            } while (optionChoice == null && optionChoice != "1" && optionChoice != "2" && optionChoice != "3" && optionChoice != "4" && optionChoice != "5");
+            } while (optionChoice == null && optionChoice != "1" && optionChoice != "2" && optionChoice != "3" && optionChoice != "4" && optionChoice != "5" && optionChoice != "6" && optionChoice != "7");
             switch (optionChoice)
             {
                 case "1":
@@ -44,6 +51,9 @@ namespace ProgPokedexConsol
                     GetPokemonById(DownloadPokemon.listePokemon);
                     break;
                 case "7":
+                    GuessThePokemonByItsDescription(DownloadPokemon.listePokemon);
+                    break;
+                case "8":
                     Environment.Exit(0);
                     break;
                 case "727":
@@ -202,13 +212,48 @@ namespace ProgPokedexConsol
                     //Si tu piges pas c'est pas grave tkt c'est une joke/ osu! ref
                     if (idChosen == 727)
                     {
-                        Console.WriteLine("Bon... tu passes pas les 4* là moi j'ai 500pp là va train connard");
+                        Console.WriteLine("Bon... tu passes pas les 4* là moi j'ai des 500pp là va train....................");
                     }
                     table.AddRow(pokemon.name.fr, pokemon.name.en, pokemon.types[0], pokemon.types[1]);
 
                 }
             }
             table.Write();
+            Menu();
+        }
+
+        public static void GuessThePokemonByItsDescription(List<Pokemon> pokemons)
+        {
+            int randomPokemon;
+            Random random = new Random();
+            bool isGuessed = false;
+            int[,] listeGeneration = DownloadPokemon.listeGen();
+            randomPokemon = random.Next(listeGeneration[0, 0], listeGeneration[7, 1]);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Voice la description du pokemon: " + pokemons[randomPokemon].description.fr);
+            Console.WriteLine("\n\nHere is the pokemon's description: " + pokemons[randomPokemon].description.en);
+            
+            do
+            {
+                string pokemonGuessed = Console.ReadLine();
+                if (pokemonGuessed == pokemons[randomPokemon].name.fr || pokemonGuessed == pokemons[randomPokemon].name.en)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nFR: Bravo tu as trouvé le bon pokemon" +
+                        "\nEN: Well done you found the right pokemon");
+                    isGuessed = true;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nDommage, ce n'est pas le bon pokemon... Essaye encore !" +
+                        "\nEN: Sorry, this is not the right pokemon... Try again!");
+
+                }
+                
+            } while (!isGuessed);
+
+            Console.ForegroundColor = ConsoleColor.White;
             Menu();
         }
     }
